@@ -14,6 +14,8 @@ namespace SpeedRunBrickBreaker
     {
         DualTexturedButton musicButton;
         Button backButton;
+
+        TextButton emptyBox;
         public Settings(ContentManager content, GraphicsDevice graphics) 
             : base(content, graphics)
         {
@@ -26,8 +28,13 @@ namespace SpeedRunBrickBreaker
             var backButtonTexture = content.Load<Texture2D>("backButton");
             var scale = Vector2.One;
 
-            backButton = new Button(backButtonTexture, new Vector2((backButtonTexture.Width / 2) * scale.X, graphics.Viewport.Height - backButtonTexture.Height / 2 * scale.Y), Color.White, scale, 0f);             
-            
+            backButton = new Button(backButtonTexture, new Vector2((backButtonTexture.Width / 2) * scale.X, graphics.Viewport.Height - backButtonTexture.Height / 2 * scale.Y), Color.White, scale, 0f);
+
+            var emptyBoxTexture = content.Load<Texture2D>("emptyBox");
+            var emptyBoxScale = Vector2.One / 4;
+            emptyBox = new TextButton(emptyBoxTexture, new Vector2(center.X, musicButton.Position.Y + emptyBoxTexture.Height * emptyBoxScale.Y), Color.White, emptyBoxScale, 0f, content.Load<SpriteFont>("SpriteFont"));
+
+            AddToBothLists(emptyBox);
             AddToBothLists(musicButton);
             AddToDrawList(backButton);
         }

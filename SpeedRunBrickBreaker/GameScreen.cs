@@ -43,7 +43,7 @@ namespace SpeedRunBrickBreaker
             paddle = new Paddle(paddleTexture, new Vector2(graphics.Viewport.Width / 2, graphics.Viewport.Height - (paddleTexture.Height / 2) * paddleScale.Y), Color.White, paddleScale, 0f, Keys.A, Keys.D);
 
             var ballTexture = content.Load<Texture2D>("glowyBall");
-            var ballScale = new Vector2(3);
+            var ballScale = new Vector2(2);
 
             //the reason i put + 10000 on the height is because i actually odn't want the ball to bounce on the bottom of the screen
             //and i know there is a check that will kill me before i reach that point
@@ -54,10 +54,10 @@ namespace SpeedRunBrickBreaker
             var heartTexture = content.Load<Texture2D>("Heart");
             var heartScale = Vector2.One / 3;
 
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Lives.Add(new Heart(heartTexture, new Vector2(heartTexture.Width / 2 * heartScale.X + heartTexture.Width * i * heartScale.X, heartTexture.Height / 2 * heartScale.Y), Color.White, heartScale, 0f));
-                 
+
             }
 
             AddToDrawList(paddle);
@@ -66,12 +66,15 @@ namespace SpeedRunBrickBreaker
 
         public override void Update(GameTime gameTime)
         {
-            paddle.Update(gameTime, GraphicsDevice);
-            ball.Update(gameTime);
-
-            for(int i = 0; i < Lives.Count; i++)
+            bool currentlyRemovingLife = false;
+            for (int i = 0; i < Lives.Count; i++)
             {
-                if(Lives[i].ShouldBeRemoved)
+                if(Lives[i].StartFadingOut == true)
+                {
+                    currentlyRemovingLife = true;
+                }
+
+                if (Lives[i].ShouldBeRemoved)
                 {
                     Lives.RemoveAt(i);
                     i--;
@@ -79,36 +82,43 @@ namespace SpeedRunBrickBreaker
                 }
                 Lives[i].Update(gameTime);
             }
-            
-            if(!ball.IsActivated)
+
+            if (currentlyRemovingLife == false)
+            {
+                ball.Update(gameTime);
+            }
+           
+            paddle.Update(gameTime, GraphicsDevice);
+
+
+            if (!ball.IsActivated)
             {
                 ball.Position = new Vector2(paddle.Position.X, (paddle.Position.Y - paddle.ScaledHeight / 2) - (ball.ScaledHeight / 2));
+                return;
             }
-            else
-            {
-                if(ball.HitBox.Intersects(paddle.HitBox))
-                {
-                    ball.Speed.Y *= -1;
-                    var random = Globals.Random.Next(-2, 3);
-                    while(ball.Speed.X + random == 0)
-                    {
-                        random = Globals.Random.Next(-2, 3);
-                    }
-                }
-            }
-
-
-            for(int i = 0; i < bricks.Count; i++)
+         
+            for (int i = 0; i < bricks.Count; i++)
             {
                 var brick = (Sprite)bricks[i];
 
-                if(ball.HitBox.Intersects(brick.HitBox))
+                if (ball.HitBox.Intersects(brick.HitBox))
                 {
                     bricks.Remove(brick);
                     i--;
                     ball.Speed.Y *= -1;
                 }
             }
+
+            if (ball.HitBox.Intersects(paddle.HitBox))
+            {
+                ball.Speed.Y *= -1;
+                var random = Globals.Random.Next(-2, 3);
+                while (ball.Speed.X + random == 0)
+                {
+                    random = Globals.Random.Next(-2, 3);
+                }
+            }
+
 
             if (ball.Position.Y - ball.ScaledHeight / 2 >= GraphicsDevice.Viewport.Height)
             {
@@ -121,6 +131,7 @@ namespace SpeedRunBrickBreaker
                 else
                 {
                     Lives[Lives.Count - 1].StartFadingOut = true;
+                    ball.ClearParticles();
                 }
             }
 
@@ -129,12 +140,14 @@ namespace SpeedRunBrickBreaker
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            for(int i = 0; i < bricks.Count; i++)
+            GraphicsDevice.Clear(Color.Black);
+
+            for (int i = 0; i < bricks.Count; i++)
             {
                 bricks[i].Draw(spriteBatch);
             }
 
-            for(int i = 0; i < Lives.Count; i++)
+            for (int i = 0; i < Lives.Count; i++)
             {
                 Lives[i].Draw(spriteBatch);
             }

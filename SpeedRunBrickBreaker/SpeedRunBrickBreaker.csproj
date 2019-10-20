@@ -59,6 +59,7 @@
     <Compile Include="Screen.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Sprite.cs" />
+    <Compile Include="TextButton.cs" />
     <Compile Include="TextSprite.cs" />
   </ItemGroup>
   <ItemGroup>

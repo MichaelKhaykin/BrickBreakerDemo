@@ -48,13 +48,6 @@ namespace SpeedRunBrickBreaker
             Globals.CurrentScreen = ScreenStates.MainMenu;
             Globals.TopScreen = ScreenStates.MainMenu;
 
-
-            ScreenManager.Add(ScreenStates.MainMenu, new MainMenu(Content, GraphicsDevice));
-            ScreenManager.Add(ScreenStates.Settings, new Settings(Content, GraphicsDevice));
-            ScreenManager.Add(ScreenStates.Game, new GameScreen(Content, GraphicsDevice));
-
-
-           
             Type colorType = typeof(Color);
             PropertyInfo[] propInfos = colorType.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
 
@@ -68,6 +61,13 @@ namespace SpeedRunBrickBreaker
                     || name.Contains("Transperency") || name.Contains("White")) continue;
                 AllColors.Add((Color)propInfo.GetValue(null));
             }
+
+            ScreenManager.Add(ScreenStates.MainMenu, new MainMenu(Content, GraphicsDevice));
+            ScreenManager.Add(ScreenStates.Settings, new Settings(Content, GraphicsDevice));
+            ScreenManager.Add(ScreenStates.Game, new GameScreen(Content, GraphicsDevice));
+
+
+     
 
              // TODO: use this.Content to load your game content here
         }

@@ -56,6 +56,10 @@ namespace SpeedRunBrickBreaker
             Bounds = bounds;
         }
 
+        public void ClearParticles()
+        {
+            Particles.Clear();
+        }
         public override void Update(GameTime gameTime)
         {
 
@@ -70,7 +74,7 @@ namespace SpeedRunBrickBreaker
             {
                 if (Particles.Count != 0)
                 {
-                    Particles.Clear();
+                    ClearParticles();
                 }
                 return;
             }

@@ -11,35 +11,52 @@ namespace SpeedRunBrickBreaker
 { 
     public class Background : Sprite
     {
-        Ball leftBall;
-        Ball rightBall;
+        List<Ball> balls = new List<Ball>();
 
-        public Background(Texture2D texture, Vector2 position, Color color, Vector2 scale, float rotation, Rectangle bounds1, Rectangle bounds2, Texture2D ballTexture)
+        TimeSpan changeSpeedTimer = TimeSpan.FromSeconds(1);
+        TimeSpan elapsedChangeSpeedTimer = TimeSpan.Zero;
+        public Background(Texture2D texture, Vector2 position, Color color, Vector2 scale, float rotation, Texture2D ballTexture, params Rectangle[] boundaries)
             : base(texture, position, color, scale, rotation)
         {
             var ballScale = Vector2.One * 2;
 
-            var leftBallX = Globals.Random.Next((int)(bounds1.X + ballTexture.Width / 2 * ballScale.X), (int)(bounds1.Width - ballTexture.Width / 2 * ballScale.X));
-            var leftBallY = Globals.Random.Next((int)(bounds1.Y + ballTexture.Height / 2 * ballScale.Y), (int)(bounds1.Height - ballTexture.Height / 2 * ballScale.Y));
-            leftBall = new Ball(ballTexture, new Vector2(leftBallX, leftBallY), Color.White, ballScale, 0f, Keys.None, bounds1)
+            for(int i = 0; i < boundaries.Length; i++)
             {
-                Speed = new Vector2(6)
-            };
+                var bounds = boundaries[i];
 
-            var rightBallX = Globals.Random.Next((int)(bounds2.X + ballTexture.Width / 2 * ballScale.X), (int)(bounds2.Width - ballTexture.Width / 2 * ballScale.X));
-            var rightBallY = Globals.Random.Next((int)(bounds2.Y + ballTexture.Height / 2 * ballScale.Y), (int)(bounds2.Height - ballTexture.Height / 2 * ballScale.Y));
-            rightBall = new Ball(ballTexture, new Vector2(rightBallX, rightBallY), Color.White, ballScale, 0f, Keys.None, bounds2)
-            {
-                Speed = new Vector2(-6)
-            };
-     
-        
+                var randomX = Globals.Random.Next((int)(bounds.X + ballTexture.Width / 2 * ballScale.X), (int)(bounds.Width - ballTexture.Width / 2 * ballScale.X));
+                var randomY = Globals.Random.Next((int)(bounds.Y + ballTexture.Height / 2 * ballScale.Y), (int)(bounds.Height - ballTexture.Height / 2 * ballScale.Y));
+
+                var ball = new Ball(ballTexture, new Vector2(randomX, randomY), Game1.AllColors[Globals.Random.Next(0, Game1.AllColors.Count)], ballScale, 0f, Keys.None, bounds)
+                {
+                    Speed = new Vector2(6)
+                };
+
+                balls.Add(ball);
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
-            leftBall.Update(gameTime);
-            rightBall.Update(gameTime);
+            elapsedChangeSpeedTimer += gameTime.ElapsedGameTime;
+
+            bool shouldReset = false;
+            foreach(var ball in balls)
+            {
+                if(elapsedChangeSpeedTimer >= changeSpeedTimer)
+                {
+                    ball.Speed += new Vector2(Globals.Random.Next(-1, 2), Globals.Random.Next(-1, 2));
+                    shouldReset = true;
+                }
+                ball.Update(gameTime);
+            }
+
+            if(shouldReset)
+            {
+                elapsedChangeSpeedTimer = TimeSpan.Zero;
+            }
+
+
             base.Update(gameTime);
         }
 
@@ -47,8 +64,10 @@ namespace SpeedRunBrickBreaker
         {
             base.Draw(spriteBatch);
 
-            leftBall.Draw(spriteBatch);
-            rightBall.Draw(spriteBatch);
+            foreach(var ball in balls)
+            {
+                ball.Draw(spriteBatch);
+            }
         }
     }
 }

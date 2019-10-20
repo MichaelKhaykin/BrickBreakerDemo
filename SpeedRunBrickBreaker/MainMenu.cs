@@ -32,10 +32,15 @@ namespace SpeedRunBrickBreaker
             Title = new TextSprite(text, font, new Vector2(center.X, size.Y), Color.Black, Vector2.One, new Vector2(size.X / 2, size.Y / 2), 0f);
             */
 
-            Rectangle leftBounds = new Rectangle(0, 0, 200, 200);
-            Rectangle rightBounds = new Rectangle(graphics.Viewport.Width - 200, 0, graphics.Viewport.Width, 200);
+            int boxWidth = 200;
+            int boxHeight = 200;
 
-            Background background = new Background(content.Load<Texture2D>("BrickBreakerBackGround"), center, Color.White, Vector2.One, 0f, leftBounds, rightBounds, content.Load<Texture2D>("glowyBall"));
+            Rectangle topLeftBounds = new Rectangle(0, 0, boxWidth, boxHeight);
+            Rectangle topRightBounds = new Rectangle(graphics.Viewport.Width - boxWidth, 0, graphics.Viewport.Width, boxHeight);
+            Rectangle bottomLeftBounds = new Rectangle(0, graphics.Viewport.Height - boxHeight, boxWidth, graphics.Viewport.Height);  
+            Rectangle bottomRightBounds = new Rectangle(graphics.Viewport.Width - boxWidth, graphics.Viewport.Height - boxHeight, graphics.Viewport.Width, graphics.Viewport.Height);
+
+            Background background = new Background(content.Load<Texture2D>("BrickBreakerBackGround"), center, Color.White, Vector2.One, 0f, content.Load<Texture2D>("glowyBall"), topLeftBounds, topRightBounds, bottomLeftBounds, bottomRightBounds);
 
             AddToBothLists(background);
             AddToBothLists(playButton);
