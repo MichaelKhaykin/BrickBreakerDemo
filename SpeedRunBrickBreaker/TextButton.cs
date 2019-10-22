@@ -22,7 +22,7 @@ namespace SpeedRunBrickBreaker
 
         public override void Update(GameTime gameTime)
         {
-            if (ShouldStartScanningForNextKey)
+            if (ShouldStartScanningForNextKey) 
             {
                 if (Globals.KeyboardState.GetPressedKeys().Length < 1)
                 {

@@ -15,10 +15,10 @@ namespace SpeedRunBrickBreaker
         Button settingsButton;
 
         TextSprite Title;
-        public MainMenu(ContentManager content, GraphicsDevice graphics) 
-            : base(content, graphics)
+        public MainMenu(ContentManager content, GraphicsDeviceManager graphics, (int width, int height) prefferedScreenSize) 
+            : base(content, graphics, prefferedScreenSize)
         {
-            Vector2 center = new Vector2(graphics.Viewport.Width / 2, graphics.Viewport.Height / 2);
+            Vector2 center = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
    
             playButton = new Button(content.Load<Texture2D>("button_play"), new Vector2(center.X, center.Y + 200), Color.White, Vector2.One / 4, 0f);
             var texture = content.Load<Texture2D>("button_settings");
@@ -36,9 +36,9 @@ namespace SpeedRunBrickBreaker
             int boxHeight = 200;
 
             Rectangle topLeftBounds = new Rectangle(0, 0, boxWidth, boxHeight);
-            Rectangle topRightBounds = new Rectangle(graphics.Viewport.Width - boxWidth, 0, graphics.Viewport.Width, boxHeight);
-            Rectangle bottomLeftBounds = new Rectangle(0, graphics.Viewport.Height - boxHeight, boxWidth, graphics.Viewport.Height);  
-            Rectangle bottomRightBounds = new Rectangle(graphics.Viewport.Width - boxWidth, graphics.Viewport.Height - boxHeight, graphics.Viewport.Width, graphics.Viewport.Height);
+            Rectangle topRightBounds = new Rectangle(GraphicsDevice.Viewport.Width - boxWidth, 0, GraphicsDevice.Viewport.Width, boxHeight);
+            Rectangle bottomLeftBounds = new Rectangle(0, GraphicsDevice.Viewport.Height - boxHeight, boxWidth, GraphicsDevice.Viewport.Height);  
+            Rectangle bottomRightBounds = new Rectangle(GraphicsDevice.Viewport.Width - boxWidth, GraphicsDevice.Viewport.Height - boxHeight, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
             Background background = new Background(content.Load<Texture2D>("BrickBreakerBackGround"), center, Color.White, Vector2.One, 0f, content.Load<Texture2D>("glowyBall"), topLeftBounds, topRightBounds, bottomLeftBounds, bottomRightBounds);
 
@@ -56,6 +56,14 @@ namespace SpeedRunBrickBreaker
             }
             if(settingsButton.IsClicked())
             {
+                Game1.graphics.PreferredBackBufferWidth = 821;
+                Game1.graphics.PreferredBackBufferHeight = 650;
+                Game1.graphics.ApplyChanges();
+
+                if (!Game1.ScreenManager.ContainsKey(ScreenStates.Settings))
+                {
+                    Game1.ScreenManager.Add(ScreenStates.Settings, new Settings(Content, Game1.graphics, (821, 650)));
+                }   
                 Globals.ChangeState(ScreenStates.Settings);
             }
 

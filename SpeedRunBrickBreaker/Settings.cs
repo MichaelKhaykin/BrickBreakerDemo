@@ -12,28 +12,33 @@ namespace SpeedRunBrickBreaker
 {
     public class Settings : Screen
     {
+        Sprite board;
+
         DualTexturedButton musicButton;
         Button backButton;
 
         TextButton emptyBox;
-        public Settings(ContentManager content, GraphicsDevice graphics) 
-            : base(content, graphics)
+        public Settings(ContentManager content, GraphicsDeviceManager graphics, (int width, int height) size) 
+            : base(content, graphics, size)
         {
-            var center = new Vector2(graphics.Viewport.Width / 2, graphics.Viewport.Height / 2);
+            var center = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
 
             var firstTexture = content.Load<Texture2D>("button_music");
             var secondTexture = content.Load<Texture2D>("button_music_off");
             musicButton = new DualTexturedButton(firstTexture, secondTexture, center, Color.White, Vector2.One / 2, 0f);
 
-            var backButtonTexture = content.Load<Texture2D>("backButton");
+            var backButtonTexture = content.Load<Texture2D>("backButtonArrow");
             var scale = Vector2.One;
 
-            backButton = new Button(backButtonTexture, new Vector2((backButtonTexture.Width / 2) * scale.X, graphics.Viewport.Height - backButtonTexture.Height / 2 * scale.Y), Color.White, scale, 0f);
+            backButton = new Button(backButtonTexture, new Vector2((backButtonTexture.Width / 2) * scale.X, backButtonTexture.Height / 2 * scale.Y), Color.White, scale, 0f);
 
             var emptyBoxTexture = content.Load<Texture2D>("emptyBox");
             var emptyBoxScale = Vector2.One / 4;
             emptyBox = new TextButton(emptyBoxTexture, new Vector2(center.X, musicButton.Position.Y + emptyBoxTexture.Height * emptyBoxScale.Y), Color.White, emptyBoxScale, 0f, content.Load<SpriteFont>("SpriteFont"));
 
+            board = new Sprite(Content.Load<Texture2D>("board"), center, Color.White, Vector2.One, 0f);
+
+            AddToBothLists(board);
             AddToBothLists(emptyBox);
             AddToBothLists(musicButton);
             AddToDrawList(backButton);
@@ -49,6 +54,12 @@ namespace SpeedRunBrickBreaker
 
             base.Update(gameTime);
         }
-        
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            GraphicsDevice.Clear(Color.Black);
+
+            base.Draw(spriteBatch);
+        }
     }
 }

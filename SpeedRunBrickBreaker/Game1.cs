@@ -10,10 +10,10 @@ namespace SpeedRunBrickBreaker
 {
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Dictionary<ScreenStates, Screen> ScreenManager = new Dictionary<ScreenStates, Screen>();
+        public static Dictionary<ScreenStates, Screen> ScreenManager = new Dictionary<ScreenStates, Screen>();
 
         public static List<Color> AllColors = new List<Color>();
         public Game1()
@@ -62,9 +62,8 @@ namespace SpeedRunBrickBreaker
                 AllColors.Add((Color)propInfo.GetValue(null));
             }
 
-            ScreenManager.Add(ScreenStates.MainMenu, new MainMenu(Content, GraphicsDevice));
-            ScreenManager.Add(ScreenStates.Settings, new Settings(Content, GraphicsDevice));
-            ScreenManager.Add(ScreenStates.Game, new GameScreen(Content, GraphicsDevice));
+            ScreenManager.Add(ScreenStates.MainMenu, new MainMenu(Content, graphics, (960, 920)));
+            ScreenManager.Add(ScreenStates.Game, new GameScreen(Content, graphics, (960, 920)));
 
 
      

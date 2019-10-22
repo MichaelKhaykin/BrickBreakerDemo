@@ -12,15 +12,18 @@ namespace SpeedRunBrickBreaker
     public class Screen
     {
         public ContentManager Content { get; set; }
-        public GraphicsDevice GraphicsDevice { get; set; }
-
         private List<GameObject> GameObjectsToUpdate = new List<GameObject>();
-
         private List<GameObject> GameObjectsToDraw = new List<GameObject>();
-        public Screen(ContentManager content, GraphicsDevice graphics)
+        public GraphicsDeviceManager GraphicsDeviceManager { get; set; }
+
+        public GraphicsDevice GraphicsDevice => GraphicsDeviceManager.GraphicsDevice;
+
+        public (int width, int height) Size;
+        public Screen(ContentManager content, GraphicsDeviceManager graphics, (int width, int height) prefferedScreenSize)
         {
             Content = content;
-            GraphicsDevice = graphics;
+            GraphicsDeviceManager = graphics;
+            Size = prefferedScreenSize;
         }
 
         public void AddToUpdateList(GameObject a)
@@ -47,7 +50,15 @@ namespace SpeedRunBrickBreaker
         }
         public virtual void Update(GameTime gameTime)
         {
-            foreach(var gameObject in GameObjectsToUpdate)
+            if (GraphicsDevice.Viewport.Width != Size.width ||
+                GraphicsDevice.Viewport.Height != Size.height)
+            {
+                GraphicsDeviceManager.PreferredBackBufferWidth = Size.width;
+                GraphicsDeviceManager.PreferredBackBufferHeight = Size.height;
+                GraphicsDeviceManager.ApplyChanges();
+            }
+
+            foreach (var gameObject in GameObjectsToUpdate)
             {
                 gameObject.Update(gameTime);
             }
@@ -55,7 +66,7 @@ namespace SpeedRunBrickBreaker
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            foreach(var gameObject in GameObjectsToDraw)
+            foreach (var gameObject in GameObjectsToDraw)
             {
                 gameObject.Draw(spriteBatch);
             }

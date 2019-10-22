@@ -25,6 +25,30 @@
 /processorParam:TextureFormat=Color
 /build:../../../../../Pictures/BackButton/Interface/PNG/Game_Screen_PNG/backButton.png;backButton.png
 
+#begin backButtonArrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:backButtonArrow.png
+
+#begin board.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:board.png
+
 #begin BrickBreakerBackGround.png
 /importer:TextureImporter
 /processor:TextureProcessor

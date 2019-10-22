@@ -18,9 +18,8 @@ namespace SpeedRunBrickBreaker
         List<Heart> Lives = new List<Heart>();
 
         Texture2D pixel;
-
-        public GameScreen(ContentManager content, GraphicsDevice graphics)
-            : base(content, graphics)
+        public GameScreen(ContentManager content, GraphicsDeviceManager graphics, (int width, int height) size)
+            : base(content, graphics, size)
         {
             pixel = new Texture2D(GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
@@ -28,9 +27,9 @@ namespace SpeedRunBrickBreaker
             var pinkBrickTexture = content.Load<Texture2D>("pinkBrick");
             var scale = Vector2.One;
 
-            for (int i = 0; i < graphics.Viewport.Width / (int)(pinkBrickTexture.Width * scale.X); i++)
+            for (int i = 0; i < GraphicsDevice.Viewport.Width / (int)(pinkBrickTexture.Width * scale.X); i++)
             {
-                for (int j = 0; j < (graphics.Viewport.Height / 2) / (int)(pinkBrickTexture.Height * scale.Y); j++)
+                for (int j = 0; j < (GraphicsDevice.Viewport.Height / 2) / (int)(pinkBrickTexture.Height * scale.Y); j++)
                 {
                     var brick = new Sprite(pinkBrickTexture, new Vector2(pinkBrickTexture.Width / 2 * scale.X + pinkBrickTexture.Width * i * scale.X, (pinkBrickTexture.Height / 2 * scale.Y) + pinkBrickTexture.Height * j * scale.Y), Color.White, scale, 0f);
                     bricks.Add(brick);
@@ -40,7 +39,7 @@ namespace SpeedRunBrickBreaker
 
             var paddleTexture = content.Load<Texture2D>("greenPaddle");
             var paddleScale = new Vector2(2, 4);
-            paddle = new Paddle(paddleTexture, new Vector2(graphics.Viewport.Width / 2, graphics.Viewport.Height - (paddleTexture.Height / 2) * paddleScale.Y), Color.White, paddleScale, 0f, Keys.A, Keys.D);
+            paddle = new Paddle(paddleTexture, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - (paddleTexture.Height / 2) * paddleScale.Y), Color.White, paddleScale, 0f, Keys.A, Keys.D);
 
             var ballTexture = content.Load<Texture2D>("glowyBall");
             var ballScale = new Vector2(2);
