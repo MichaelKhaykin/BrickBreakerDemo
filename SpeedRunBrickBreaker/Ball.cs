@@ -84,7 +84,7 @@ namespace SpeedRunBrickBreaker
             if (elapsedTimeToAddParticle >= timeToAddParticle)
             {
                 elapsedTimeToAddParticle = TimeSpan.Zero;
-                Particles.Add(new Particle(Texture, Position, Game1.AllColors[Globals.Random.Next(0, Game1.AllColors.Count)], Vector2.One / 2, 0f, TimeSpan.FromMilliseconds(Globals.Random.Next(500, 1000))));
+                Particles.Add(new Particle(Texture, Position, Globals.AllColors[Globals.Random.Next(0, Globals.AllColors.Count)], Vector2.One / 2, 0f, TimeSpan.FromMilliseconds(Globals.Random.Next(500, 1000))));
             }
 
             if (Position.X + ScaledWidth / 2 >= Bounds.Width || Position.X - ScaledWidth / 2 <= Bounds.X)

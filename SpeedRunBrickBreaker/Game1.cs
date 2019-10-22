@@ -13,9 +13,6 @@ namespace SpeedRunBrickBreaker
         public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public static Dictionary<ScreenStates, Screen> ScreenManager = new Dictionary<ScreenStates, Screen>();
-
-        public static List<Color> AllColors = new List<Color>();
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -24,8 +21,8 @@ namespace SpeedRunBrickBreaker
 
         protected override void Initialize()
         {
-            graphics.PreferredBackBufferWidth = 1920 / 2;
-            graphics.PreferredBackBufferHeight = 920;
+            graphics.PreferredBackBufferWidth = (int)(960 * Globals.ScreenScale.X);
+            graphics.PreferredBackBufferHeight = (int)(920 * Globals.ScreenScale.Y);
             graphics.ApplyChanges();
 
             IsMouseVisible = true;
@@ -59,11 +56,11 @@ namespace SpeedRunBrickBreaker
 
                 if (name.Contains("Black") || name.Contains("Blue") || name.Contains("Transperent")
                     || name.Contains("Transperency") || name.Contains("White")) continue;
-                AllColors.Add((Color)propInfo.GetValue(null));
+                Globals.AllColors.Add((Color)propInfo.GetValue(null));
             }
 
-            ScreenManager.Add(ScreenStates.MainMenu, new MainMenu(Content, graphics, (960, 920)));
-            ScreenManager.Add(ScreenStates.Game, new GameScreen(Content, graphics, (960, 920)));
+            Globals.ScreenManager.Add(ScreenStates.MainMenu, new MainMenu(Content, graphics, (960, 920)));
+            Globals.ScreenManager.Add(ScreenStates.Game, new GameScreen(Content, graphics, (960, 920)));
 
 
      
@@ -81,7 +78,7 @@ namespace SpeedRunBrickBreaker
             Globals.MouseState = Mouse.GetState();
             Globals.KeyboardState = Keyboard.GetState();
 
-            ScreenManager[Globals.TopScreen].Update(gameTime);
+            Globals.ScreenManager[Globals.TopScreen].Update(gameTime);
 
             Globals.OldMouseState = Globals.MouseState;
             Globals.OldKeyboardState = Globals.KeyboardState;
@@ -95,10 +92,10 @@ namespace SpeedRunBrickBreaker
 
             spriteBatch.Begin();
 
-            ScreenManager[Globals.CurrentScreen].Draw(spriteBatch);
+            Globals.ScreenManager[Globals.CurrentScreen].Draw(spriteBatch);
             if (Globals.CurrentScreen != Globals.TopScreen)
             {
-                ScreenManager[Globals.TopScreen].Draw(spriteBatch);
+                Globals.ScreenManager[Globals.TopScreen].Draw(spriteBatch);
             }
 
             spriteBatch.End();

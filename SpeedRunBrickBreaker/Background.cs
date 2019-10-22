@@ -27,7 +27,7 @@ namespace SpeedRunBrickBreaker
                 var randomX = Globals.Random.Next((int)(bounds.X + ballTexture.Width / 2 * ballScale.X), (int)(bounds.Width - ballTexture.Width / 2 * ballScale.X));
                 var randomY = Globals.Random.Next((int)(bounds.Y + ballTexture.Height / 2 * ballScale.Y), (int)(bounds.Height - ballTexture.Height / 2 * ballScale.Y));
 
-                var ball = new Ball(ballTexture, new Vector2(randomX, randomY), Game1.AllColors[Globals.Random.Next(0, Game1.AllColors.Count)], ballScale, 0f, Keys.None, bounds)
+                var ball = new Ball(ballTexture, new Vector2(randomX, randomY), Globals.AllColors[Globals.Random.Next(0, Globals.AllColors.Count)], ballScale, 0f, Keys.None, bounds)
                 {
                     Speed = new Vector2(6)
                 };

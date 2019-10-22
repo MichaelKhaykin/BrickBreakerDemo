@@ -13,14 +13,12 @@ namespace SpeedRunBrickBreaker
     {
         Button playButton;
         Button settingsButton;
-
-        TextSprite Title;
-        public MainMenu(ContentManager content, GraphicsDeviceManager graphics, (int width, int height) prefferedScreenSize) 
+       public MainMenu(ContentManager content, GraphicsDeviceManager graphics, (int width, int height) prefferedScreenSize) 
             : base(content, graphics, prefferedScreenSize)
         {
             Vector2 center = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
    
-            playButton = new Button(content.Load<Texture2D>("button_play"), new Vector2(center.X, center.Y + 200), Color.White, Vector2.One / 4, 0f);
+            playButton = new Button(Globals.TextureInfos["PlayButton"].Texture, new Vector2(center.X, center.Y + 200), Color.White, Globals.TextureInfos["PlayButton"].Scale, 0f);
             var texture = content.Load<Texture2D>("button_settings");
             var scale = Vector2.One / 2;
             settingsButton = new Button(texture, new Vector2(center.X, playButton.Position.Y + texture.Height * scale.Y), Color.White, scale, 0f);
@@ -45,7 +43,6 @@ namespace SpeedRunBrickBreaker
             AddToBothLists(background);
             AddToBothLists(playButton);
             AddToBothLists(settingsButton);
-      //      AddToBothLists(Title);
         }
 
         public override void Update(GameTime gameTime)
@@ -60,9 +57,9 @@ namespace SpeedRunBrickBreaker
                 Game1.graphics.PreferredBackBufferHeight = 650;
                 Game1.graphics.ApplyChanges();
 
-                if (!Game1.ScreenManager.ContainsKey(ScreenStates.Settings))
+                if (!Globals.ScreenManager.ContainsKey(ScreenStates.Settings))
                 {
-                    Game1.ScreenManager.Add(ScreenStates.Settings, new Settings(Content, Game1.graphics, (821, 650)));
+                    Globals.ScreenManager.Add(ScreenStates.Settings, new Settings(Content, Game1.graphics, (821, 650)));
                 }   
                 Globals.ChangeState(ScreenStates.Settings);
             }

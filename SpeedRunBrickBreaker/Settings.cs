@@ -18,6 +18,8 @@ namespace SpeedRunBrickBreaker
         Button backButton;
 
         TextButton emptyBox;
+
+        Sprite settingsHeader;
         public Settings(ContentManager content, GraphicsDeviceManager graphics, (int width, int height) size) 
             : base(content, graphics, size)
         {
@@ -38,7 +40,11 @@ namespace SpeedRunBrickBreaker
 
             board = new Sprite(Content.Load<Texture2D>("board"), center, Color.White, Vector2.One, 0f);
 
-            AddToBothLists(board);
+        //    var texture = Content.Load<Texture2D>()
+       //     settingsHeader = new Sprite(Content.Load<Texture2D>("header_settings"), new Vector2(board.Position.X - board.ScaledWidth / 2 + , board.Position.Y - board.ScaledHeight / 2), Color.White, Vector2.One, 0f);
+
+            AddToDrawList(board);
+            AddToDrawList(settingsHeader);
             AddToBothLists(emptyBox);
             AddToBothLists(musicButton);
             AddToDrawList(backButton);

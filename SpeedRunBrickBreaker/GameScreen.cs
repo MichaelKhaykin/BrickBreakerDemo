@@ -31,7 +31,7 @@ namespace SpeedRunBrickBreaker
             {
                 for (int j = 0; j < (GraphicsDevice.Viewport.Height / 2) / (int)(pinkBrickTexture.Height * scale.Y); j++)
                 {
-                    var brick = new Sprite(pinkBrickTexture, new Vector2(pinkBrickTexture.Width / 2 * scale.X + pinkBrickTexture.Width * i * scale.X, (pinkBrickTexture.Height / 2 * scale.Y) + pinkBrickTexture.Height * j * scale.Y), Color.White, scale, 0f);
+                    var brick = new Sprite(pinkBrickTexture, new Vector2(pinkBrickTexture.Width / 2 * scale.X + pinkBrickTexture.Width * i * scale.X, (pinkBrickTexture.Height / 2 * scale.Y) + pinkBrickTexture.Height * j * scale.Y), Globals.AllColors[Globals.Random.Next(0, Globals.AllColors.Count)], scale, 0f);
                     bricks.Add(brick);
                 }
             }
