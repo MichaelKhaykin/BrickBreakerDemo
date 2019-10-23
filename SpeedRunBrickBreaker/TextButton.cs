@@ -16,12 +16,12 @@ namespace SpeedRunBrickBreaker
         public Keys Key { get; set; }
 
         public bool ShouldStartScanningForNextKey = false;
-        public TextButton(Texture2D texture, Vector2 position, Color color, Vector2 scale, float rotation, SpriteFont font) 
+        public TextButton(Texture2D texture, Vector2 position, Color color, Vector2 scale, float rotation, SpriteFont font, Keys key) 
             : base(texture, position, color, scale, rotation)
         {
             var origin = new Vector2(font.MeasureString("M").X / 2, font.MeasureString("M").Y / 2);
-            TextSprite = new TextSprite("", font, position, Color.Black, Vector2.One * 2, origin, 0f);
-            Key = Keys.None;
+            TextSprite = new TextSprite(key.ToString(), font, position, Color.Black, Vector2.One * 2, origin, 0f);
+            Key = key;
         }
 
         public void Update(GameTime gameTime, Keys bannedKey)

@@ -63,7 +63,8 @@ namespace SpeedRunBrickBreaker
 
             var paddleTexture = content.Load<Texture2D>("greenPaddle");
             var paddleScale = new Vector2(2, 4);
-            paddle = new Paddle(paddleTexture, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - (paddleTexture.Height / 2) * paddleScale.Y), Color.White, paddleScale, 0f, Keys.A, Keys.D);
+           
+            paddle = new Paddle(paddleTexture, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - (paddleTexture.Height / 2) * paddleScale.Y), Color.White, paddleScale, 0f, Settings.LeftPaddleKey, Settings.RightPaddleKey);
 
             var ballTexture = content.Load<Texture2D>("glowyBall");
             var ballScale = new Vector2(2);

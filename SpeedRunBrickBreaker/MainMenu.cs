@@ -49,9 +49,10 @@ namespace SpeedRunBrickBreaker
         {
             if(playButton.IsClicked())
             {
+                Globals.ScreenManager.Add(ScreenStates.Game, new GameScreen(Content, Game1.graphics, (960, 920)));
                 Globals.ChangeState(ScreenStates.Game);
             }
-            if(settingsButton.IsClicked())
+            if (settingsButton.IsClicked())
             {
                 Game1.graphics.PreferredBackBufferWidth = 821;
                 Game1.graphics.PreferredBackBufferHeight = 650;
