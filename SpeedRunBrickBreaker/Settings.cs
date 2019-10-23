@@ -81,8 +81,8 @@ namespace SpeedRunBrickBreaker
 
             AddToDrawList(board);
             AddToDrawList(musicIcon);
-            AddToBothLists(leftKeyBinding);
-            AddToBothLists(rightKeyBinding);
+            AddToDrawList(leftKeyBinding);
+            AddToDrawList(rightKeyBinding);
             AddToBothLists(slider);
             AddToDrawList(keyboardSprite);
             AddToDrawList(settingsHeader);
@@ -92,6 +92,10 @@ namespace SpeedRunBrickBreaker
 
         public override void Update(GameTime gameTime)
         {
+            leftKeyBinding.Update(gameTime, rightKeyBinding.Key);
+            rightKeyBinding.Update(gameTime, leftKeyBinding.Key);
+
+
             if(backButton.IsClicked())
             {
                 Globals.CurrentScreen = Globals.ScreenStatesStack.Pop();
