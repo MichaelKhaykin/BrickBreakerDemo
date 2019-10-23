@@ -36,11 +36,16 @@ namespace SpeedRunBrickBreaker
         public static List<Color> AllColors = new List<Color>();
 
         public static Vector2 ScreenScale = Vector2.One;
-        public static void ChangeState(ScreenStates newState)
+        public static void ChangeState(ScreenStates newState, ScreenStates partialState = ScreenStates.None)
         {
+            if(partialState == ScreenStates.None)
+            {
+                partialState = newState;
+            }
+
             ScreenStatesStack.Push(CurrentScreen);
             CurrentScreen = newState;
-            TopScreen = newState;
+            TopScreen = partialState;
         }
     }
 }

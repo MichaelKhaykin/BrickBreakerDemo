@@ -12,7 +12,8 @@ namespace SpeedRunBrickBreaker
 {
     public class GameScreen : Screen
     {
-        List<GameObject> bricks = new List<GameObject>();
+        GameObject[,] bricks;
+
         Paddle paddle;
         Ball ball;
         List<Heart> Lives = new List<Heart>();
@@ -27,12 +28,35 @@ namespace SpeedRunBrickBreaker
             var pinkBrickTexture = content.Load<Texture2D>("pinkBrick");
             var scale = Vector2.One;
 
-            for (int i = 0; i < GraphicsDevice.Viewport.Width / (int)(pinkBrickTexture.Width * scale.X); i++)
+
+            int xCount = GraphicsDevice.Viewport.Width / (int)(pinkBrickTexture.Width * scale.X);
+            int yCount = (GraphicsDevice.Viewport.Height / 2) / (int)(pinkBrickTexture.Height * scale.Y);
+
+            bricks = new GameObject[yCount, xCount];
+
+            int threshhold = 100;
+
+            for (int i = 0; i < yCount; i++)
             {
-                for (int j = 0; j < (GraphicsDevice.Viewport.Height / 2) / (int)(pinkBrickTexture.Height * scale.Y); j++)
+                for (int j = 0; j < xCount; j++)
                 {
-                    var brick = new Sprite(pinkBrickTexture, new Vector2(pinkBrickTexture.Width / 2 * scale.X + pinkBrickTexture.Width * i * scale.X, (pinkBrickTexture.Height / 2 * scale.Y) + pinkBrickTexture.Height * j * scale.Y), Globals.AllColors[Globals.Random.Next(0, Globals.AllColors.Count)], scale, 0f);
-                    bricks.Add(brick);
+                    var color = Globals.AllColors[Globals.Random.Next(0, Globals.AllColors.Count)];
+
+                    var upBrick = i - 1 >= 0 ? bricks[i - 1, j] : null;
+                    var downBrick = i + 1 < yCount ? bricks[i + 1, j] : null;
+                    var leftBrick = j - 1 >= 0 ? bricks[i, j - 1] : null;
+                    var rightBrick = j + 1 < xCount ? bricks[i, j + 1] : null;
+
+                    while (upBrick != null && Math.Abs(upBrick.Color.R - color.R) >= threshhold &&
+                           downBrick != null && Math.Abs(downBrick.Color.G - color.G) >= threshhold &&
+                           leftBrick != null && Math.Abs(leftBrick.Color.B - color.B) >= threshhold &&
+                           rightBrick != null && Math.Abs(rightBrick.Color.A - color.A) >= threshhold)
+                    {
+                        color = Globals.AllColors[Globals.Random.Next(0, Globals.AllColors.Count)];
+                    }
+
+                    var brick = new Sprite(pinkBrickTexture, new Vector2(pinkBrickTexture.Width / 2 * scale.X + pinkBrickTexture.Width * i * scale.X, (pinkBrickTexture.Height / 2 * scale.Y) + pinkBrickTexture.Height * j * scale.Y), color, scale, 0f);
+                    bricks[i, j] = brick;
                 }
             }
 
@@ -65,6 +89,11 @@ namespace SpeedRunBrickBreaker
 
         public override void Update(GameTime gameTime)
         {
+            if(Globals.KeyboardState.IsKeyDown(Keys.Escape) && Globals.OldKeyboardState.IsKeyUp(Keys.Escape))
+            {
+                Globals.ChangeState(ScreenStates.Game, ScreenStates.Pause);
+            }
+
             bool currentlyRemovingLife = false;
             for (int i = 0; i < Lives.Count; i++)
             {
@@ -96,17 +125,24 @@ namespace SpeedRunBrickBreaker
                 return;
             }
          
-            for (int i = 0; i < bricks.Count; i++)
+            for (int i = 0; i < bricks.GetLength(0); i++)
             {
-                var brick = (Sprite)bricks[i];
-
-                if (ball.HitBox.Intersects(brick.HitBox))
+                for (int j = 0; j < bricks.GetLength(1); j++)
                 {
-                    bricks.Remove(brick);
-                    i--;
-                    ball.Speed.Y *= -1;
+                    var brick = (Sprite)bricks?[i, j];
+
+                    if (brick == null) continue;
+
+                    if (ball.HitBox.Intersects(brick.HitBox))
+                    {
+                        bricks[i, j] = null;
+                        ball.Speed.Y *= -1;
+                        goto outOfForLoop;
+                    }
                 }
             }
+            
+            outOfForLoop:
 
             if (ball.HitBox.Intersects(paddle.HitBox))
             {
@@ -141,9 +177,12 @@ namespace SpeedRunBrickBreaker
         {
             GraphicsDevice.Clear(Color.Black);
 
-            for (int i = 0; i < bricks.Count; i++)
+            for(int i = 0; i < bricks.GetLength(0); i++)
             {
-                bricks[i].Draw(spriteBatch);
+                for(int j = 0; j < bricks.GetLength(1); j++)
+                {
+                    bricks[i, j]?.Draw(spriteBatch);
+                }
             }
 
             for (int i = 0; i < Lives.Count; i++)

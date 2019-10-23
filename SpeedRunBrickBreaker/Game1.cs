@@ -40,6 +40,7 @@ namespace SpeedRunBrickBreaker
             MediaPlayer.IsRepeating = true;
 
             Globals.GameSong = Content.Load<Song>("Gaslamp Funworks");
+            MediaPlayer.Volume = 0;
             MediaPlayer.Play(Globals.GameSong);
 
             Globals.CurrentScreen = ScreenStates.MainMenu;
@@ -54,14 +55,15 @@ namespace SpeedRunBrickBreaker
             {
                 var name = propInfo.Name;
 
-                if (name.Contains("Black") || name.Contains("Blue") || name.Contains("Transperent")
-                    || name.Contains("Transperency") || name.Contains("White")) continue;
-                Globals.AllColors.Add((Color)propInfo.GetValue(null));
+                if (name.Contains("Black") || name.Contains("Blue") || name.Contains("Transparent")
+                    || name.Contains("Transparency") || name.Contains("White")) continue;
+
+                Globals.AllColors.Add((Color)propInfo.GetValue(color));
             }
 
             Globals.ScreenManager.Add(ScreenStates.MainMenu, new MainMenu(Content, graphics, (960, 920)));
             Globals.ScreenManager.Add(ScreenStates.Game, new GameScreen(Content, graphics, (960, 920)));
-
+            Globals.ScreenManager.Add(ScreenStates.Pause, new PauseScreen(Content, graphics, (960, 920)));
 
      
 
@@ -70,9 +72,6 @@ namespace SpeedRunBrickBreaker
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             // TODO: Add your update logic here
 
             Globals.MouseState = Mouse.GetState();

@@ -8,6 +8,7 @@ namespace SpeedRunBrickBreaker
 {
     public enum ScreenStates
     {
+        None,
         MainMenu,
         Settings,
         Game,

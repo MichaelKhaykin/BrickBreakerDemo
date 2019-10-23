@@ -18,7 +18,7 @@ namespace SpeedRunBrickBreaker
         {
             Vector2 center = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
    
-            playButton = new Button(Globals.TextureInfos["PlayButton"].Texture, new Vector2(center.X, center.Y + 200), Color.White, Globals.TextureInfos["PlayButton"].Scale, 0f);
+            playButton = new Button(content.Load<Texture2D>("button_play"), new Vector2(center.X, center.Y + 200), Color.White, Vector2.One / 4, 0f);
             var texture = content.Load<Texture2D>("button_settings");
             var scale = Vector2.One / 2;
             settingsButton = new Button(texture, new Vector2(center.X, playButton.Position.Y + texture.Height * scale.Y), Color.White, scale, 0f);
