@@ -44,11 +44,10 @@ namespace SpeedRunBrickBreaker
                 var pressedKey = Globals.KeyboardState.GetPressedKeys()[0];
                 if (pressedKey == bannedKey) return;
 
-                var letter = pressedKey.ToString()[0];
-                if (letter >= 65 && letter <= 90)
+                if ((int)pressedKey >= 65 && (int)pressedKey <= 90)
                 {
                     Key = pressedKey;
-                    TextSprite.Text = $"{letter}";
+                    TextSprite.Text = $"{pressedKey.ToString()}";
                 }
             }
 

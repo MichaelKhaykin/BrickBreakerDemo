@@ -62,8 +62,7 @@ namespace SpeedRunBrickBreaker
             }
 
             Globals.ScreenManager.Add(ScreenStates.MainMenu, new MainMenu(Content, graphics, (960, 920)));
-            Globals.ScreenManager.Add(ScreenStates.Pause, new PauseScreen(Content, graphics, (960, 920)));
-
+          
      
 
              // TODO: use this.Content to load your game content here

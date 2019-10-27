@@ -67,9 +67,9 @@ namespace SpeedRunBrickBreaker
             paddle = new Paddle(paddleTexture, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - (paddleTexture.Height / 2) * paddleScale.Y), Color.White, paddleScale, 0f, Settings.LeftPaddleKey, Settings.RightPaddleKey);
 
             var ballTexture = content.Load<Texture2D>("glowyBall");
-            var ballScale = new Vector2(2);
+            var ballScale = new Vector2(1.9f);
 
-            //the reason i put + 10000 on the height is because i actually odn't want the ball to bounce on the bottom of the screen
+            //the reason i put + 10000 on the height is because i actussally odn't want the ball to bounce on the bottom of the screen
             //and i know there is a check that will kill me before i reach that point
             Rectangle bounds = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height + 10000);
 
@@ -80,7 +80,7 @@ namespace SpeedRunBrickBreaker
 
             for (int i = 0; i < 3; i++)
             {
-                Lives.Add(new Heart(heartTexture, new Vector2(heartTexture.Width / 2 * heartScale.X + heartTexture.Width * i * heartScale.X, heartTexture.Height / 2 * heartScale.Y), Color.White, heartScale, 0f));
+                Lives.Add(new Heart(heartTexture, new Vector2(heartTexture.Width / 2 * heartScale.X + heartTexture.Width * i * heartScale.X, heartTexture.Height / 2 * heartScale.Y), Color.Black, heartScale, 0f));
 
             }
 
@@ -90,8 +90,21 @@ namespace SpeedRunBrickBreaker
 
         public override void Update(GameTime gameTime)
         {
+            if(paddle.LeftKey != Settings.LeftPaddleKey)
+            {
+                paddle.LeftKey = Settings.LeftPaddleKey;
+            }
+            if(paddle.RightKey != Settings.RightPaddleKey)
+            {
+                paddle.RightKey = Settings.RightPaddleKey;
+            }
+
             if(Globals.KeyboardState.IsKeyDown(Keys.Escape) && Globals.OldKeyboardState.IsKeyUp(Keys.Escape))
             {
+                if (!Globals.ScreenManager.ContainsKey(ScreenStates.Pause))
+                {
+                    Globals.ScreenManager.Add(ScreenStates.Pause, new PauseScreen(Content, GraphicsDeviceManager, (960, 920)));
+                }
                 Globals.ChangeState(ScreenStates.Game, ScreenStates.Pause);
             }
 
